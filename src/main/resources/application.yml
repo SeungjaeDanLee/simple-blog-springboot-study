@@ -24,8 +24,8 @@ spring:
       client:
         registration:
           google:
-            client-id: # 스스로 세팅 필요
-            client-secret: # 스스로 세팅 필요
+            client-id: "test-client-id" # 스스로 세팅 필요
+            client-secret: "test-client-secret" # 스스로 세팅 필요
             scope:
               - email
               - profile
