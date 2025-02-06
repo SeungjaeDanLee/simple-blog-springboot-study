@@ -2,9 +2,12 @@ package me.seungjae.blog.service;
 
 import lombok.RequiredArgsConstructor;
 import me.seungjae.blog.domain.Article;
+import me.seungjae.blog.domain.Comment;
 import me.seungjae.blog.dto.AddArticleRequest;
+import me.seungjae.blog.dto.AddCommentRequest;
 import me.seungjae.blog.dto.UpdateArticleRequest;
 import me.seungjae.blog.repository.BlogRepository;
+import me.seungjae.blog.repository.CommentRepository;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,6 +19,7 @@ import java.util.List;
 public class BlogService {
 
     private final BlogRepository blogRepository;
+    private final CommentRepository commentRepository;
 
     // 블로그 글 추가 메서드
     public Article save(AddArticleRequest request, String username) {
@@ -50,6 +54,11 @@ public class BlogService {
         article.update(request.getTitle(), request.getContent());
 
         return article;
+    }
+
+    public Comment addComment(AddCommentRequest request, String userName) {
+        Article article = blogRepository.findById(request.getArticleId()).orElseThrow(() -> new IllegalArgumentException("not found: " + request.getArticleId()));
+        return commentRepository.save(request.toEntity(userName, article));
     }
 
     // 게시글을 작성한 유저인지 확인
